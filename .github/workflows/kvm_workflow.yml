@@ -1,0 +1,48 @@
+name: kvm_workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Login using gh
+        run: gh auth login --hostname github.ibm.com --with-token <<<"${{ secrets.IBM_GITHUB_TOKEN }}"
+
+      - name: Cloning the required repo
+        run: |
+          mkdir githubActionsTest
+          cd githubActionsTest
+          gh repo clone ${{ secrets.KVM_REPO }}
+          cd ${{ secrets.KVM_REPO }}
+          git checkout .
+          
+      - name: Run make build
+        working-directory: ./githubActionsTest/${{ secrets.KVM_REPO }}
+        run: make build
+
+      - name: Get short SHA
+        id: vars
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+        
+      - name: Push release to github
+        working-directory: ./githubActionsTest/${{ secrets.KVM_REPO }}
+        run: |
+          echo $(git tag) >> existingTags
+          cat existingTags
+          if grep -q "latest" existingTags; then
+            echo "Tag exists"
+            gh release upload latest hyptop-exporter-kvm --clobber  
+          else
+            echo "Tag doesnt exists"
+            gh release create latest hyptop-exporter-kvm --notes "tagging and releasing the build binary"
+          fi
+          if grep -q "${{ env.SHORT_SHA }}" existingTags; then
+            echo "Tag exists"
+            gh release upload ${{ env.SHORT_SHA }} hyptop-exporter-kvm --clobber  
+          else
+            echo "Tag doesnt exists"
+            gh release create ${{ env.SHORT_SHA }} hyptop-exporter-kvm --notes "tagging and releasing the build binary"
+          fi
