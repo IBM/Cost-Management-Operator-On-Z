@@ -15,7 +15,7 @@ jobs:
         run: |
           mkdir githubActionsTest
           cd githubActionsTest
-          gh repo clone ${{ secrets.KVM_REPO }}
+          gh repo clone ${{ secrets.KVM_REPO_ADD }}
           cd ${{ secrets.KVM_REPO }}
           git checkout .
           
