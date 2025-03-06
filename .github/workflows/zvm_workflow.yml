@@ -20,7 +20,7 @@ jobs:
         run: |
           mkdir githubActionsTest
           cd githubActionsTest
-          gh repo clone ${{ secrets.REPO }}
+          gh repo clone ${{ secrets.ZVM_REPO_ADD }}
           cd ${{ secrets.REPO }}
           git checkout .
           
