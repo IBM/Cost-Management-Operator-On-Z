@@ -7,6 +7,10 @@ All the Github Actions are executed manually and they automate certain tasks on 
   Builds and Pushes the docker image of operator on ZVM to QUAY
 - cmo_monitoring<br>
   Builds and pushes the docker image of CMO Operator to QUAY
+
+  Pre-requisites
+  - Make sure that the you have a valid token to the github.ibm.com repositories.
+  - Store that in the secrets of this repo, to be able to access the required repo's in enterprise github.
   
 
 
