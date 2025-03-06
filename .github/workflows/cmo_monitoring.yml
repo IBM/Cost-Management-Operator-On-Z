@@ -25,7 +25,8 @@ jobs:
           cd githubActionsTest
           gh repo clone ${{ secrets.CMO_REPO_ADD }}
           cd ${{ secrets.CMO_REPO }}
-          git checkout .
+          git checkout test-update-lpar-code
+      #git checkout .
 
       - name: Set up Go
         uses: actions/setup-go@v2
