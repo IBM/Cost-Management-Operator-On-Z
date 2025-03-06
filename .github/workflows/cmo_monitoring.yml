@@ -23,7 +23,7 @@ jobs:
         run: |
           mkdir githubActionsTest
           cd githubActionsTest
-          gh repo clone ${{ secrets.CMO_REPO }}
+          gh repo clone ${{ secrets.CMO_REPO_ADD }}
           cd ${{ secrets.CMO_REPO }}
           git checkout .
 
