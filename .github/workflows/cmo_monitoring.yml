@@ -56,4 +56,6 @@ jobs:
           export PLATFORMS=linux/s390x
           export VERSION=$VERSION
           make docker-buildx
-          make bundle bundle-build bundle-push
+          
+      - name : test-docker
+        run: make bundle bundle-build bundle-push
