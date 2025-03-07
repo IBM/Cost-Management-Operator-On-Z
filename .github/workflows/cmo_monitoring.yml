@@ -61,3 +61,8 @@ jobs:
           make docker-buildx
           make bundle bundle-build bundle-push
 
+      - name: Catalog build
+        run: |
+          export VERSION=$VERSION
+          make catalog-build catalog-push
+
