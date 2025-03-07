@@ -62,21 +62,20 @@ jobs:
         run: |
           make docker-buildx
 
-
-      # - name: Bundle build and push
-      #   env:
-      #     VERSION: '$VERSION'
-      #     IMG: '${{ env.IMAGE_TAG_BASE }}-controller:v${{ github.event.inputs.version }}'
-      #     BUNDLE_IMG: '${{ env.IMAGE_TAG_BASE }}-bundle:v${{ github.event.inputs.version }}'
-      #   working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
-      #   run: |
-      #     make bundle
-      #     sed -e '1 s/\(^FROM\)/FROM --platform=\$\{BUILDPLATFORM\}/; t' -e ' 1,// s//FROM --platform=\$\{BUILDPLATFORM\}/' bundle.Dockerfile > bundle.Dockerfile.cross
-      #     ${{ env.CONTAINER_TOOL }} buildx create --name cmo-monitoring-on-z-operator-builder
-      #     ${{ env.CONTAINER_TOOL }} buildx use cmo-monitoring-on-z-operator-builder
-      #     ${{ env.CONTAINER_TOOL }} buildx build --push --platform=${{ env.PLATFORMS }} --tag ${{ env.BUNDLE_IMG }} -f bundle.Dockerfile.cross .
-      #     ${{ env.CONTAINER_TOOL }} buildx rm cmo-monitoring-on-z-operator-builder
-      #     rm bundle.Dockerfile.cross
+      - name: Bundle build and push
+        env:
+          VERSION: '$VERSION'
+          IMG: '${{ env.IMAGE_TAG_BASE }}-controller:v${{ github.event.inputs.version }}'
+          BUNDLE_IMG: '${{ env.IMAGE_TAG_BASE }}-bundle:v${{ github.event.inputs.version }}'
+        working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
+        run: |
+          make bundle
+          sed -e '1 s/\(^FROM\)/FROM --platform=\$\{BUILDPLATFORM\}/; t' -e ' 1,// s//FROM --platform=\$\{BUILDPLATFORM\}/' bundle.Dockerfile > bundle.Dockerfile.cross
+          ${{ env.CONTAINER_TOOL }} buildx create --name cmo-monitoring-on-z-operator-builder
+          ${{ env.CONTAINER_TOOL }} buildx use cmo-monitoring-on-z-operator-builder
+          ${{ env.CONTAINER_TOOL }} buildx build --push --platform=${{ env.PLATFORMS }} --tag ${{ env.BUNDLE_IMG }} -f bundle.Dockerfile.cross .
+          ${{ env.CONTAINER_TOOL }} buildx rm cmo-monitoring-on-z-operator-builder
+          rm bundle.Dockerfile.cross
 
           
       # - name: Catalog build and push
