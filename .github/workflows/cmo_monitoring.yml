@@ -57,7 +57,7 @@ jobs:
       # Builds
       - name: Docker build and push using Buildx
         env:
-          IMG: '${{ env.IMAGE_TAG_BASE }}-controller:v$VERSION'
+          IMG: '${{ env.IMAGE_TAG_BASE }}-controller:v${{ VERSION }}'
         working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
         run: |
           make docker-buildx
