@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_TAG_BASE: 'quay.io/cmo-monitoring-operator-on-z/'
+      IMAGE_TAG_BASE: 'quay.io/cmo-monitoring-operator-on-z/cmo-monitoring-operator-on-z'
       VERSION: ${{ github.event.inputs.version }}
       PLATFORMS: 'linux/s390x'
       CONTAINER_TOOL: 'docker'
@@ -56,11 +56,11 @@ jobs:
 
       # Builds
       - name: Docker build and push using Buildx
-        env:
-          IMG: 'cmo-monitoring-on-z-operator-controller:v${{ github.event.inputs.version }}'
         working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
+        env:
+          IMG: '${{ env.IMAGE_TAG_BASE }}-controller:v${{ github.event.inputs.version }}'
         run: |
-          make docker-build docker-push
+          make docker-buildx
 
 
       # - name: Bundle build and push
