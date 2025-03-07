@@ -77,14 +77,14 @@ jobs:
           ${{ env.CONTAINER_TOOL }} buildx build --push --platform=${{ env.PLATFORMS }} --tag ${{ env.BUNDLE_IMG }} -f bundle.Dockerfile.cross .
           ${{ env.CONTAINER_TOOL }} buildx rm cmo-monitoring-on-z-operator-builder
           rm bundle.Dockerfile.cross
-
           
-      # - name: Catalog build and push
-      #   env:
-      #     VERSION: '$VERSION'
-      #     DOCKER_DEFAULT_PLATFORM: '${{ env.PLATFORMS }}'
-      #   working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
-      #   run: |
-      #     make catalog-build catalog-push
+      - name: Catalog build and push
+        env:
+          VERSION: '${{ github.event.inputs.version }}'
+          DOCKER_DEFAULT_PLATFORM: '${{ env.PLATFORMS }}'
+          IMG: '${{ env.IMAGE_TAG_BASE_BUNDLE }}-catalog:v${{ github.event.inputs.version }}'
+        working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
+        run: |
+          make catalog-build catalog-push
 
 
