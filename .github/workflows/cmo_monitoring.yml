@@ -65,7 +65,7 @@ jobs:
 
       - name: Bundle build and push
         env:
-          VERSION: '$VERSION'
+          VERSION: '${{ github.event.inputs.version }}'
           IMG: '${{ env.IMAGE_TAG_BASE_CONTROLLER }}-controller:v${{ github.event.inputs.version }}'
           BUNDLE_IMG: '${{ env.IMAGE_TAG_BASE }}-bundle:v${{ github.event.inputs.version }}'
         working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
