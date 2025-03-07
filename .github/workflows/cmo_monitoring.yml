@@ -13,7 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      IMAGE_TAG_BASE: 'quay.io/cmo-monitoring-operator-on-z/cmo-monitoring-on-z-operator'
       VERSION: ${{ github.event.inputs.version }}
+      PLATFORMS: 'linux/s390x'
+      CONTAINER_TOOL: 'docker'
+
     steps:
     
       - name: Login using gh
@@ -50,16 +54,35 @@ jobs:
            username: ${{ secrets.QUAY_USER }}
            password: ${{ secrets.QUAY_TOKEN }}
 
-
-      - name: Docker build and push
+      # Builds
+      - name: Docker build and push using Buildx
+        env:
+          IMG: '${{ env.IMAGE_TAG_BASE }}-controller:v$VERSION'
         working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
         run: |
-          export IMAGE_TAG_BASE=quay.io/cmo-monitoring-operator-on-z/cmo-monitoring-on-z-operator
-          export IMG=quay.io/cmo-monitoring-operator-on-z/cmo-monitoring-on-z-controller
-          export PLATFORMS=linux/s390x
-          export VERSION=$VERSION
           make docker-buildx
-          make bundle bundle-build bundle-push
+
+
+      - name: Bundle build and push
+        env:
+          VERSION: '$VERSION'
+          IMG: '${{ env.IMAGE_TAG_BASE }}-controller:v$VERSION'
+          BUNDLE_IMG: '${{ env.IMAGE_TAG_BASE }}-bundle:v$VERSION'
+        run: |
+          make bundle
+          sed -e '1 s/\(^FROM\)/FROM --platform=\$\{BUILDPLATFORM\}/; t' -e ' 1,// s//FROM --platform=\$\{BUILDPLATFORM\}/' bundle.Dockerfile > bundle.Dockerfile.cross
+          ${{ env.CONTAINER_TOOL }} buildx create --name openshift-ai-toolkit-operator-builder
+          ${{ env.CONTAINER_TOOL }} buildx use openshift-ai-toolkit-operator-builder
+          ${{ env.CONTAINER_TOOL }} buildx build --push --platform=${{ env.PLATFORMS }} --tag ${{ env.BUNDLE_IMG }} -f bundle.Dockerfile.cross .
+          ${{ env.CONTAINER_TOOL }} buildx rm openshift-ai-toolkit-operator-builder
+          rm bundle.Dockerfile.cross
+
+          
+      - name: Catalog build and push
+        env:
+          VERSION: '$VERSION'
+          DOCKER_DEFAULT_PLATFORM: '${{ env.PLATFORMS }}'
+        run: |
           make catalog-build catalog-push
 
 
