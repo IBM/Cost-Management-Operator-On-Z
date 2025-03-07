@@ -59,7 +59,7 @@ jobs:
       - name: Docker build and push using Buildx
         working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
         env:
-          IMG: 'quay.io/cmo-monitoring-operator-on-z/cmo-monitoring-on-z-controller:v${{ github.event.inputs.version }}'
+          IMG: '${{ env.IMAGE_TAG_BASE_CONTROLLER }}-controller:v${{ github.event.inputs.version }}'
         run: |
           make docker-buildx
 
