@@ -82,7 +82,7 @@ jobs:
         env:
           VERSION: '${{ github.event.inputs.version }}'
           DOCKER_DEFAULT_PLATFORM: '${{ env.PLATFORMS }}'
-          CATALOG_IMG: 'quay.io/cmo-monitoring-operator-on-z/cmo-monitoring-on-z-operator-catalog'
+          CATALOG_IMG: 'quay.io/cmo-monitoring-operator-on-z/cmo-monitoring-on-z-operator-catalog:v${{ github.event.inputs.version }}'
           BUNDLE_IMGS: 'quay.io/cmo-monitoring-operator-on-z/cmo-monitoring-on-z-operator-bundle:v${{ github.event.inputs.version }}'
           FROM_INDEX_OPT: '--from-index quay.io/cmo-monitoring-operator-on-z/cmo-monitoring-on-z-operator-bundle:v${{ github.event.inputs.version }}'
         working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
