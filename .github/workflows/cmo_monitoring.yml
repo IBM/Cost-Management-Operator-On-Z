@@ -82,7 +82,6 @@ jobs:
         env:
           VERSION: '${{ github.event.inputs.version }}'
           DOCKER_DEFAULT_PLATFORM: '${{ env.PLATFORMS }}'
-          IMG: 'quay.io/cmo-monitoring-operator-on-z/cmo-monitoring-on-z-operator-catalog:v${{ github.event.inputs.version }}'
         working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
         run: |
           make catalog-build catalog-push
