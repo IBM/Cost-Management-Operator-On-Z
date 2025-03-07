@@ -62,6 +62,7 @@ jobs:
           make bundle bundle-build bundle-push
 
       - name: Catalog build
+        working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
         run: |
           export VERSION=$VERSION
           make catalog-build catalog-push
