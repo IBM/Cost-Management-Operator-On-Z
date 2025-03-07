@@ -68,6 +68,7 @@ jobs:
           VERSION: '$VERSION'
           IMG: '${{ env.IMAGE_TAG_BASE }}-controller:v$VERSION'
           BUNDLE_IMG: '${{ env.IMAGE_TAG_BASE }}-bundle:v$VERSION'
+        working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
         run: |
           make bundle
           sed -e '1 s/\(^FROM\)/FROM --platform=\$\{BUILDPLATFORM\}/; t' -e ' 1,// s//FROM --platform=\$\{BUILDPLATFORM\}/' bundle.Dockerfile > bundle.Dockerfile.cross
@@ -82,6 +83,7 @@ jobs:
         env:
           VERSION: '$VERSION'
           DOCKER_DEFAULT_PLATFORM: '${{ env.PLATFORMS }}'
+        working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
         run: |
           make catalog-build catalog-push
 
