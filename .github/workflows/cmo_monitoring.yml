@@ -57,7 +57,7 @@ jobs:
       # Builds
       - name: Docker build and push using Buildx
         env:
-          IMG: '${{ env.IMAGE_TAG_BASE }}-controller:v${{ VERSION }}'
+          IMG: '${{ env.IMAGE_TAG_BASE }}-controller:v${{ github.event.inputs.version }}'
         working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
         run: |
           make docker-buildx
@@ -66,8 +66,8 @@ jobs:
       - name: Bundle build and push
         env:
           VERSION: '$VERSION'
-          IMG: '${{ env.IMAGE_TAG_BASE }}-controller:v$VERSION'
-          BUNDLE_IMG: '${{ env.IMAGE_TAG_BASE }}-bundle:v$VERSION'
+          IMG: '${{ env.IMAGE_TAG_BASE }}-controller:v${{ github.event.inputs.version }}'
+          BUNDLE_IMG: '${{ env.IMAGE_TAG_BASE }}-bundle:v${{ github.event.inputs.version }}'
         working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
         run: |
           make bundle
