@@ -14,7 +14,7 @@ jobs:
 
     env:
       IMAGE_TAG_BASE_CONTROLLER: 'quay.io/cmo-monitoring-operator-on-z/cmo-monitoring-on-z'
-      IMAGE_TAG_BASE: 'quay.io/cmo-monitoring-operator-on-z/cmo-monitoring-operator-on-z'
+      IMAGE_TAG_BASE_BUNDLE: 'quay.io/cmo-monitoring-operator-on-z/cmo-monitoring-on-z-operator'
       VERSION: ${{ github.event.inputs.version }}
       PLATFORMS: 'linux/s390x'
       CONTAINER_TOOL: 'docker'
@@ -67,7 +67,7 @@ jobs:
         env:
           VERSION: '${{ github.event.inputs.version }}'
           IMG: '${{ env.IMAGE_TAG_BASE_CONTROLLER }}-controller:v${{ github.event.inputs.version }}'
-          BUNDLE_IMG: '${{ env.IMAGE_TAG_BASE }}-bundle:v${{ github.event.inputs.version }}'
+          BUNDLE_IMG: '${{ env.IMAGE_TAG_BASE_BUNDLE }}-bundle:v${{ github.event.inputs.version }}'
         working-directory: ./githubActionsTest/${{ secrets.CMO_REPO }}
         run: |
           make bundle
