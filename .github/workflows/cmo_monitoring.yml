@@ -30,9 +30,7 @@ jobs:
           cd githubActionsTest
           gh repo clone ${{ secrets.CMO_REPO_ADD }}
           cd ${{ secrets.CMO_REPO }}
-          git checkout new-test-lpar
-          cd api/v1alpha1
-          ls
+          git checkout .
       #git checkout .
 
       - name: Set up Go
